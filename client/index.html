@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="analyze_app" ng-init="isFocused = true">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Page Analyzer</title>
+	<link rel="stylesheet" href="./statics/style.css">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+</head>
+
+<script>
+	var analyze_app = angular.module('analyze_app', []);
+	
+	analyze_app.controller('AnalyzeController', function($scope, AnalyzeFactory){
+		$scope.histo_table = new Object();
+		$scope.keys = [];
+
+		$scope.analyze = function(){
+			console.log("analyze button clicked!");
+
+			var temp_string = $scope.input_text.text;
+			//var histo_table = new Object();
+			//var keys = [];
+			var punctuations = [".",",","?","-","!",":", ";","%", "$", "[", "]"];
+			// Prep the string before parsing by removing certain characters
+
+			for (punctuation in punctuations){
+				for (character in temp_string){
+					//console.log(punctuations[punctuation]);
+					temp_string = temp_string.replace(punctuations[punctuation], " ");
+				}
+			}
+
+			// console.log("temp string = ", temp_string);
+			var raw_words = temp_string.split(" ");
+
+			// Parse the string
+			for (var word in raw_words){
+				if (raw_words[word].length > 1) {
+					if ($scope.histo_table[raw_words[word]]){
+						$scope.histo_table[raw_words[word]]++;
+					} else {
+						$scope.histo_table[raw_words[word]] = 1;
+						
+						// store the keys
+						$scope.keys.push(raw_words[word]);
+					}
+				}
+			}
+
+			// Reorder the histogram based on key/value pair
+			console.log($scope.histo_table);
+
+			// Clear input and reset focus
+			$scope.input_text = {};
+			$scope.isFocused = true;
+	   };
+
+	   function sortHistorgram(input){
+
+	   }
+	});
+
+	analyze_app.factory('AnalyzeFactory', function(){
+		var factory = {};
+
+		return factory;
+	});
+                
+</script>
+
+<body ng-controller="AnalyzeController">
+	<h1>Input Text</h1>
+	<textarea name="input-text" id="input-text" ng-model="input_text.text" autofocus ng-focus="isFocused = true">
+
+	</textarea><br>
+	<input type="button" value="Analyze Text" ng-click="analyze()">
+
+	<!-- <h1>{{input_text.text}}</h1> -->
+	<!-- <h1>{{isFocused = true}}</h1> -->
+	<h5>{{keys[0]}}</h5>
+	{{histo_table[keys[0]]}}
+</body>
+</html>

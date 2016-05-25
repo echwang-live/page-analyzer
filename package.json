@@ -1,0 +1,16 @@
+{
+  "name": "page-analyzer",
+  "version": "1.0.0",
+  "description": "Project to analyze text occurance of an input address",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Eric Wang",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+  }
+}

@@ -14,14 +14,19 @@
 	analyze_app.controller('AnalyzeController', function($scope, AnalyzeFactory){
 		$scope.histo_table = new Object();
 		$scope.keys = [];
+		$scope.content;
 
 		$scope.analyze = function(){
 			console.log("analyze button clicked!");
 
+			// Reset the variables
+			$scope.keys = [];
+
+			// Setup string for processing
 			var temp_string = $scope.input_text.text;
-			//var histo_table = new Object();
-			//var keys = [];
-			var punctuations = [".",",","?","-","!",":", ";","%", "$", "[", "]"];
+			$scope.content = $scope.input_text.text;
+
+			var punctuations = [".",",","?","-","!",":", ";","%", "$", "[", "]", "#", "&"];
 			// Prep the string before parsing by removing certain characters
 
 			for (punctuation in punctuations){
@@ -76,9 +81,17 @@
 	</textarea><br>
 	<input type="button" value="Analyze Text" ng-click="analyze()">
 
-	<!-- <h1>{{input_text.text}}</h1> -->
-	<!-- <h1>{{isFocused = true}}</h1> -->
-	<h5>{{keys[0]}}</h5>
-	{{histo_table[keys[0]]}}
+	<h1>Histogram of All Words</h1>
+  	<input type="text" ng-model="filter_name" placeholder="filter">
+	<ul>
+	 <!-- here is where we are going to display all words and occurence  -->
+	 	<li ng-repeat="key in keys | filter: filter_name">
+	      {{key}} -- {{histo_table[key]}}
+	    </li>
+	</ul>
+
+	<h1>Original Text </h1>
+	<p>{{content}}</p>
+
 </body>
 </html>
